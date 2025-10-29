@@ -1,0 +1,1030 @@
+{
+  "name": "BASE_AGENDADOR_WORKFLOW",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "04c6ca35-7572-4699-bcb7-bbf2f2a6e6a4",
+              "name": "response",
+              "value": "horário não disponivel, peça outro horário",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "2938a0f5-1391-44f1-a313-0d33f581f346",
+      "name": "Edit Fields5",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1408,
+        1216
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "be5649a9-7624-4621-bd2d-84c25577c0ce",
+              "leftValue": "={{ $json.available }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b12fa2c3-e88a-481e-809f-809eb011998c",
+      "name": "If6",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1184,
+        976
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "=",
+          "mode": "id"
+        },
+        "returnAll": true,
+        "options": {
+          "query": "={{ $item(\"0\").$node[\"Switch1\"].json[\"query\"][\"email\"] }}"
+        }
+      },
+      "id": "ab7dc80f-6caf-4a07-82be-83e8abd8ed7f",
+      "name": "Verifica evento1",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        1488,
+        960
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "DLIy8upmLt6IqurL",
+          "name": "Google Calendar Dra Karina"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "=",
+          "mode": "id"
+        },
+        "returnAll": true,
+        "options": {
+          "query": "={{ $item(\"0\").$node[\"Switch1\"].json[\"query\"][\"email\"] }}"
+        }
+      },
+      "id": "3438b5a9-b15a-46af-8746-f22c5cc9f23f",
+      "name": "Verifica evento",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        1040,
+        1568
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "DLIy8upmLt6IqurL",
+          "name": "Google Calendar Dra Karina"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7f842ffa-cd8f-40ab-a0a7-40dc173357a7",
+              "name": "response",
+              "value": "Que a reunião foi reagendada",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "08c3429c-cfb7-402f-b638-181125e422fd",
+      "name": "Edit Fields4",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2112,
+        960
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "=",
+          "mode": "id"
+        },
+        "eventId": "={{ $item(\"0\").$node[\"Verifica evento1\"].json[\"id\"] }}",
+        "useDefaultReminders": false,
+        "updateFields": {
+          "end": "={{ $item(\"0\").$node[\"Execute Workflow Trigger\"].json[\"query\"][\"end\"] }}",
+          "sendUpdates": "all",
+          "start": "={{ $item(\"0\").$node[\"Execute Workflow Trigger\"].json[\"query\"][\"start\"] }}"
+        }
+      },
+      "id": "514a5f5d-0a00-48f7-94e9-c21b8577167e",
+      "name": "Google Calendar3",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        1792,
+        960
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "DLIy8upmLt6IqurL",
+          "name": "Google Calendar Dra Karina"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7f842ffa-cd8f-40ab-a0a7-40dc173357a7",
+              "name": "response",
+              "value": "Informe o usuário que o agendamento foi cancelado e que estará sempre à disposição para um novo agendamento.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "373fafb3-ed4f-46fa-8122-66e14df9a075",
+      "name": "Edit Fields3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1696,
+        1568
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "=",
+          "mode": "id"
+        },
+        "eventId": "={{ $item(\"0\").$node[\"Verifica evento\"].json[\"id\"] }}",
+        "options": {}
+      },
+      "id": "da0da030-e4c2-4e89-941d-bc7f1351f9cf",
+      "name": "Google Calendar1",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        1344,
+        1568
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "DLIy8upmLt6IqurL",
+          "name": "Google Calendar Dra Karina"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "=",
+          "mode": "id"
+        },
+        "start": "={{ $('Switch1').item.json.query.start }}",
+        "end": "={{ $('Switch1').item.json.query.end }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ $('Switch1').item.json.query.email }}"
+          ],
+          "description": "={{ $('Switch1').item.json.Remotejid }}",
+          "summary": "=Agendamento automático: {{ $('Execute Workflow Trigger').item.json.query.nome }}|{{ $('Execute Workflow Trigger').item.json.query.email }}"
+        }
+      },
+      "id": "4c84e005-28f0-4865-8ec8-06dbc2a93750",
+      "name": "Marca",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        2272,
+        256
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "DLIy8upmLt6IqurL",
+          "name": "Google Calendar Dra Karina"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "=",
+          "mode": "id"
+        },
+        "timeMin": "={{ $item(\"0\").$node[\"Execute Workflow Trigger\"].json[\"query\"][\"start\"] }}",
+        "timeMax": "={{ $item(\"0\").$node[\"Execute Workflow Trigger\"].json[\"query\"][\"end\"] }}",
+        "options": {}
+      },
+      "id": "eb08f64e-1b9a-46f9-a58f-c3a69deba276",
+      "name": "Disponibilidade",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        1568,
+        288
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "DLIy8upmLt6IqurL",
+          "name": "Google Calendar Dra Karina"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8d192ed0-aebd-404e-8339-daab0d29651f",
+              "leftValue": "={{ $json.attendees?.[0]?.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ad139a6e-5839-488a-be23-0ec4baa2705a",
+      "name": "If3",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1184,
+        256
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "edc090f3-5297-46f6-badf-11b0535a8a30",
+              "name": "response",
+              "value": "=Já possui uma reunião:\n\nInicio: {{ $item(\"0\").$node[\"If3\"].json[\"start\"][\"dateTime\"] }}\nFim: {{ $item(\"0\").$node[\"If3\"].json[\"end\"][\"dateTime\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "19d29cd3-bc3c-4151-9961-a5dc883742d4",
+      "name": "Edit Fields2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1344,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "04c6ca35-7572-4699-bcb7-bbf2f2a6e6a4",
+              "name": "response",
+              "value": "horário não disponivel, peça outro horário",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "315eb516-23e8-474c-9351-aa80d23b2c6a",
+      "name": "Edit Fields1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2048,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "be5649a9-7624-4621-bd2d-84c25577c0ce",
+              "leftValue": "={{ $json.available }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "0627f595-ea4a-45ec-97ee-1fb4ca9b781e",
+      "name": "If1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1840,
+        288
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "86ff282a-3ede-4417-98c1-0d10858bc5dc",
+              "name": "response",
+              "value": "Agendamento concluído",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d8cd2317-f17a-4c3c-802b-4597199a2e40",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2544,
+        256
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "fc8a3135-1714-4a06-99ba-d766d41c4f54",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        1232
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# AGENDAMENTO",
+        "height": 614,
+        "width": 2064,
+        "color": 6
+      },
+      "id": "908f8689-73f0-4f8c-a2a6-e2e11c04c195",
+      "name": "Sticky Note11",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        784,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### RESPOSTA AO AGENTE 1",
+        "height": 260,
+        "width": 300,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1264,
+        448
+      ],
+      "typeVersion": 1,
+      "id": "f1a597fc-f8a6-45d5-b601-bc33d2a1fb84",
+      "name": "Sticky Note26"
+    },
+    {
+      "parameters": {
+        "content": "### RESPOSTA AO AGENTE 2",
+        "height": 260,
+        "width": 320,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1952,
+        448
+      ],
+      "typeVersion": 1,
+      "id": "d519595f-ae2b-4f63-8ada-033665a8dd68",
+      "name": "Sticky Note27"
+    },
+    {
+      "parameters": {
+        "content": "### RESPOSTA AO AGENTE 3",
+        "height": 260,
+        "width": 280,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2464,
+        176
+      ],
+      "typeVersion": 1,
+      "id": "4c812667-cfa0-4622-986d-db7924d56179",
+      "name": "Sticky Note28"
+    },
+    {
+      "parameters": {
+        "content": "# REAGENDAMENTO",
+        "height": 634,
+        "width": 1624,
+        "color": 5
+      },
+      "id": "e7565c69-b81e-4db1-b3f8-a753b18e8fe4",
+      "name": "Sticky Note12",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        784,
+        816
+      ]
+    },
+    {
+      "parameters": {
+        "content": "### RESPOSTA AO AGENTE 1",
+        "height": 260,
+        "width": 300,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1312,
+        1136
+      ],
+      "typeVersion": 1,
+      "id": "3b85c931-7550-4ed0-a24f-0bdae5a30ee2",
+      "name": "Sticky Note29"
+    },
+    {
+      "parameters": {
+        "content": "### RESPOSTA AO AGENTE 2",
+        "height": 260,
+        "width": 320,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2000,
+        880
+      ],
+      "typeVersion": 1,
+      "id": "f842ee47-fadf-4aa1-a40f-41db33ed2edf",
+      "name": "Sticky Note30"
+    },
+    {
+      "parameters": {
+        "content": "### RESPOSTA AO AGENTE ",
+        "height": 260,
+        "width": 300,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1600,
+        1488
+      ],
+      "typeVersion": 1,
+      "id": "563e8673-708d-4876-b14a-afa7ea9c5c48",
+      "name": "Sticky Note31"
+    },
+    {
+      "parameters": {
+        "content": "# ATIVAÇÃO DA TOOL PELO AGENTE + FILTRO EVENTO",
+        "height": 514,
+        "width": 724,
+        "color": 4
+      },
+      "id": "7c32bdf3-6024-4d58-bd4c-efc2b09f1a97",
+      "name": "Sticky Note14",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        1040
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "=",
+          "mode": "id"
+        },
+        "timeMin": "={{ $item(\"0\").$node[\"Execute Workflow Trigger\"].json[\"query\"][\"start\"] }}",
+        "timeMax": "={{ $item(\"0\").$node[\"Execute Workflow Trigger\"].json[\"query\"][\"end\"] }}",
+        "options": {}
+      },
+      "id": "6d9e0413-474c-43fb-8ed2-6e4af982b9b3",
+      "name": "Disponibilidade1",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        976
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "DLIy8upmLt6IqurL",
+          "name": "Google Calendar Dra Karina"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "=",
+          "mode": "id"
+        },
+        "returnAll": true,
+        "options": {
+          "query": "={{ $json.query.email }}"
+        }
+      },
+      "id": "eb8bd975-4e7b-43f7-942c-dfde50ebeb0e",
+      "name": "Consulta se já tem evento",
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        256
+      ],
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "DLIy8upmLt6IqurL",
+          "name": "Google Calendar Dra Karina"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $item(\"0\").$node[\"Execute Workflow Trigger\"].json[\"Evento\"] }}",
+                    "rightValue": "agendamento",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "a3cab2ad-7480-4ba7-ac09-420209134e25"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "agendamento"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d788021f-29ab-41f2-b355-2b18963d30f2",
+                    "leftValue": "={{ $item(\"0\").$node[\"Execute Workflow Trigger\"].json[\"Evento\"] }}",
+                    "rightValue": "reagendamento",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "reagendamento"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "7a57e8e8-5227-4cde-8d58-7b447cd55a17",
+                    "leftValue": "={{ $item(\"0\").$node[\"Execute Workflow Trigger\"].json[\"Evento\"] }}",
+                    "rightValue": "cancelamento",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "cancelamento"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "57a2d43b-ed87-41a4-a795-6a4997154658",
+                    "leftValue": "={{ $item(\"0\").$node[\"Execute Workflow Trigger\"].json[\"Evento\"] }}",
+                    "rightValue": "sugestao",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "sugestao"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "19d425a9-0ceb-4d00-ad98-95e0075bf428",
+      "name": "Switch1",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        96,
+        1232
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// =================================================\n// CONFIGURAÇÕES\n// =================================================\nconst horaInicio = 14;     // Início do expediente (14:00)\nconst horaFim = 18;       // Fim do expediente (18:00)\nconst intervaloMinutos = 30; // Duração de cada slot (60 min = 1h)\nconst diasParaVerificar = 7; // Quantos dias no futuro verificar\nconst fusoHorarioOffset = \"-03:00\"; // Offset do fuso horário para a formatação da SAÍDA\nconst fusoHorarioIdentifier = \"America/Sao_Paulo\"; // Identificador do fuso para formatação\n\n// =================================================\n// FUNÇÃO AUXILIAR PARA FORMATAR A DATA DE SAÍDA\n// =================================================\n/**\n * Formata um objeto Date para uma string no formato YYYY-MM-DDTHH:mm:ss±HH:mm\n * @param {Date} date - O objeto Date a ser formatado.\n * @returns {string} - A data formatada com o fuso horário do Brasil.\n */\nfunction formatarParaFusoBrasil(date) {\n  // Usamos toLocaleString com o identificador de timezone e o local 'sv-SE'\n  // que nos dá um formato muito próximo do ISO (YYYY-MM-DD HH:mm:ss)\n  const dataFormatada = date.toLocaleString('sv-SE', {\n    timeZone: fusoHorarioIdentifier,\n    year: 'numeric',\n    month: '2-digit',\n    day: '2-digit',\n    hour: '2-digit',\n    minute: '2-digit',\n    second: '2-digit',\n    hour12: false,\n  });\n\n  // Apenas trocamos o espaço por 'T' e adicionamos o offset no final\n  return dataFormatada.replace(' ', 'T') + fusoHorarioOffset;\n}\n\n// =================================================\n// LÓGICA PRINCIPAL\n// =================================================\n\n// Mapeia os eventos de entrada para um formato mais simples\nconst eventosOcupados = $input.all()\n  .filter(item => item.json.start?.dateTime && item.json.end?.dateTime)\n  .map(item => ({\n    start: new Date(item.json.start.dateTime),\n    end: new Date(item.json.end.dateTime)\n  }));\n\nconst horariosLivres = [];\nconst hoje = new Date();\n\n// Loop pelos próximos dias para encontrar horários livres\nfor (let d = 0; d < diasParaVerificar; d++) {\n  const diaAtual = new Date(hoje);\n  const horaInicioDoDia = diaAtual.getDay() in [2, 3] ? 9 : horaInicio\n  const horaFimDoDia = diaAtual.getDay() in [2, 3] ? 9 : horaFim\n  diaAtual.setDate(hoje.getDate() + d);\n\n  const ano = diaAtual.getFullYear();\n  const mes = String(diaAtual.getMonth() + 1).padStart(2, '0');\n  const dia = String(diaAtual.getDate()).padStart(2, '0');\n  const diaString = `${ano}-${mes}-${dia}`;\n  \n\n  // Cria as datas de início e fim do expediente no fuso horário correto\n  const inicioTrabalho = new Date(`${diaString}T${String(horaInicioDoDia).padStart(2,'0')}:00:00${fusoHorarioOffset}`);\n  const fimTrabalho = new Date(`${diaString}T${String(horaFimDoDia).padStart(2,'0')}:00:00${fusoHorarioOffset}`);\n  \n  // Pula fins de semana\n  if (inicioTrabalho.getDay() === 0 || inicioTrabalho.getDay() === 6) {\n    continue;\n  }\n\n  // Itera sobre o dia de trabalho\n  for (let tempoAtual = inicioTrabalho.getTime(); tempoAtual < fimTrabalho.getTime(); tempoAtual += intervaloMinutos * 60 * 1000) {\n    const inicioSlot = new Date(tempoAtual);\n    const fimSlot = new Date(tempoAtual + intervaloMinutos * 60 * 1000);\n\n    const inicioSlotTime = inicioSlot.getTime();\n    const fimSlotTime = fimSlot.getTime();\n\n    // Verifica se o slot atual conflita com algum evento\n    const estaOcupado = eventosOcupados.some(evento => {\n      const inicioEventoTime = evento.start.getTime();\n      const fimEventoTime = evento.end.getTime();\n      return inicioSlotTime < fimEventoTime && fimSlotTime > inicioEventoTime;\n    });\n\n    if (!estaOcupado) {\n      // **A MUDANÇA ESTÁ AQUI**\n      // Usamos a nova função para formatar a data de saída\n      horariosLivres.push({\n        dia: diaString,\n        inicio: formatarParaFusoBrasil(inicioSlot),\n        fim: formatarParaFusoBrasil(fimSlot),\n      });\n    }\n  }\n}\n\n// Retorna a lista de horários livres no formato que o n8n espera\nreturn horariosLivres;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        1776
+      ],
+      "id": "0b7ea07d-6c6d-414b-9e31-c0c85b65b876",
+      "name": "Code",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "=",
+          "mode": "id"
+        },
+        "returnAll": true,
+        "timeMin": "={{ $now.plus({ hour: 1 }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        1040,
+        1776
+      ],
+      "id": "9200f8af-d97b-4090-aaca-c88bacb7948e",
+      "name": "Get many events1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "DLIy8upmLt6IqurL",
+          "name": "Google Calendar Dra Karina"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "403d5291-c767-43a0-ac73-3070798a5afd",
+              "name": "response",
+              "value": "={{ $('Code').all() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1632,
+        1776
+      ],
+      "id": "74275d0f-eaef-49fb-9cec-c8b1eac3cabd",
+      "name": "retorna eventos"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "If6": {
+      "main": [
+        [
+          {
+            "node": "Verifica evento1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica evento1": {
+      "main": [
+        [
+          {
+            "node": "Google Calendar3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica evento": {
+      "main": [
+        [
+          {
+            "node": "Google Calendar1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marca": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Disponibilidade": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Disponibilidade",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Marca",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Disponibilidade1": {
+      "main": [
+        [
+          {
+            "node": "If6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consulta se já tem evento": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Consulta se já tem evento",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Disponibilidade1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Verifica evento",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get many events1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "retorna eventos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d7e265b9-2dda-4cac-9180-cac876933d7d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b460cfa8a7f483e5947aabff19433a3e4e68cb81b3f4683eedab5b2c160853a7"
+  },
+  "id": "oEqcRmkWRt8zAUTh",
+  "tags": []
+}
