@@ -81,7 +81,7 @@ Este workflow funciona como um "endpoint" de ferramentas para o agente principal
 
 1.  **Clonar o Repositório:**
     ```bash
-    git clone [URL_DO_SEU_REPOSITORIO]
+    git clone https://github.com/LucasPinottiBrito/scheduling_agent_n8n.git
     ```
 2.  **Importar Workflows no n8n:**
     * Faça o upload dos dois arquivos `.json` para sua instância do n8n.
